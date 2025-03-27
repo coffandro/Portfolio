@@ -1,4 +1,4 @@
-BIN = ./
+BIN = bin
 HTMLFILE = src/index.html
 
 PATH_SDL_LINUX = /usr/include/SDL2
@@ -15,7 +15,7 @@ web-release: $(BIN)
 	-s USE_SDL=2 \
 	-s USE_SDL_IMAGE=2 \
 	-s SDL2_IMAGE_FORMATS='["png"]' \
-	-o index.js
+	-o $(BIN)/index.js
 
 web-debug: $(BIN)
 	rm -f $(BIN)/index.html
@@ -25,20 +25,20 @@ web-debug: $(BIN)
 	-s USE_SDL=2 \
 	-s USE_SDL_IMAGE=2 \
 	-s SDL2_IMAGE_FORMATS='["png"]' \
-	-o index.html
+	-o $(BIN)/index.html
 
 linux-release: $(BIN)
 	gcc src/main.cpp \
 	-lSDL2 \
 	-lm \
 	-lstdc++ \
-	-o main
+	-o $(BIN)/main
 
 linux-release: $(BIN)
 	gcc src/main.cpp \
 	-lSDL2 \
 	-lm \
 	-lstdc++ \
-	-o main
+	-o $(BIN)/main
 
 all: $(BIN)	web-release	linux-release
