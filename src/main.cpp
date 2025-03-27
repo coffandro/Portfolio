@@ -9,7 +9,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 
-#ifdef WEBBUILD
+#ifdef __EMSCRIPTEN__
     #include <emscripten.h>
 #endif
 
@@ -64,36 +64,40 @@ typedef struct { int val, side; v2 pos; } hit_point;
         (__typeof__(a))(_a < 0 ? -1 : (_a > 0 ? 1 : 0)); \
     })
 
-#define MAP_SIZE 20
+#define MAP_SIZE 19
 static u8 MAPDATA[MAP_SIZE * MAP_SIZE] = {
-    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-    1, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-    1, 0, 1, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-    1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-    1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 0, 0, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 };
 
 static std::string links[4] = {
-    "", 
-    "", 
-    "", 
-    "test"
+    "", // 0
+    "", // 1
+    "", // 2
+    "https://fallout4london.com/", // 3
 };
+
+std::string texture_paths[1] = {
+    "assets/FalloutLondonLogo.png"
+};
+SDL_Surface* textures[1];
 
 // The struct containing most of the games actually... 
 // important stuffs
@@ -102,12 +106,11 @@ struct {
     SDL_Window *window;
     SDL_Texture *texture;
     SDL_Renderer *renderer;
-    SDL_Renderer *back_renderer;
 
     // a buffer to contain the pixels to draw on screen
     u32 pixels[WINDOW_WIDTH * WINDOW_HEIGHT];
     // a bool to keep track of whether to run the mainloop or not
-    bool quit, link_open;
+    bool quit, mouse_active;
     // the distance to the object in front.
     f32 FDist;
     hit_point current_target;
@@ -130,6 +133,14 @@ static void verline(int x, int y0, int y1, u32 color) {
     for (int y = y0; y <= y1; y++) {
         state.pixels[(y * WINDOW_WIDTH) + x] = color;
     }
+}
+
+static void texture_verline(int x, int y0, int y1, const char* image) {
+    // for every int between y0 and y1 on the x cord place a
+    // pixel on the screen with the color 
+    // for (int y = y0; y <= y1; y++) {
+    //     state.pixels[(y * WINDOW_WIDTH) + x] = color;
+    // }
 }
 
 void setupSDL()
@@ -180,11 +191,19 @@ void init()
     SDL_SetRelativeMouseMode(SDL_TRUE);
     // set start position of player, may consider removing
     // for 0,0 start
-    state.pos = (v2) { 2, 2 };
+    state.pos = (v2) { 1, 9.5 };
     // set the current direction of the player
     state.dir = normalize(((v2) { 1.0f, 0.1f }));
     // still unsure
     state.plane = (v2) { 0.0f, 0.66f };
+
+    for(unsigned int i = 0; i < sizeof(texture_paths)/sizeof(texture_paths[0]); i++) {
+        textures[i] = IMG_Load(texture_paths[i].c_str());
+        std::cout << i << "/" << texture_paths->size() <<" "<< texture_paths[i].c_str() << "\n";
+        ASSERT(
+            textures[i], 
+            "failed to create SDL surface: %s\n", IMG_GetError());
+    }
 }
 
 static void rotate(f32 rot) {
@@ -220,21 +239,9 @@ void move(float x, float y, bool reverse = false)
 }
 
 void process_input() {
-    if (state.link_open) {
-        return;
-    }
-
-    #ifdef WEBBUILD
-    #else
-        SDL_Event ev;
-        while (SDL_PollEvent(&ev)) {
-            switch (ev.type) {
-                case SDL_QUIT:
-                    state.quit = true;
-                    break;
-            }
-        }
-    #endif
+    // if (!state.mouse_active) {
+    //     return;
+    // }
 
     const f32
         rotspeed = 3.0f * 0.016f,
@@ -244,23 +251,18 @@ void process_input() {
     const u32 clicked = SDL_GetMouseState(&state.mouse_x, NULL);
 
     if (clicked == 1) {
-        // v2i_s ipos = { (int) state.current_target.pos.x, (int) state.current_target.pos.y };
-        // const char* link = links[ipos.y * MAP_SIZE + ipos.x];
-        // std::cout << link << "\n";
         std::string link = links[state.current_target.val];
         if (link != state.last_link) {
             state.last_link = link;
-            std::string pre = "window.open(";
-            std::string post = ")";
-            std::string code = pre + link + post;
-            #ifdef WEBBUILD
-                EM_ASM(code);
+            std::string code = "window.open(" + link + ")";
+            #ifdef __EMSCRIPTEN__
+                emscripten_run_script(code.c_str());
             #endif
         }
     }
 
     if (state.old_mouse_x != state.mouse_x) {
-        int diff = std::clamp((state.mouse_x-state.old_mouse_x), -1, 1);
+        int diff = std::clamp((state.mouse_x-state.old_mouse_x)/10, -1, 1);
         rotate(diff * rotspeed);
         state.mouse_x = WINDOW_WIDTH/2;
         state.old_mouse_x = state.mouse_x;
@@ -272,7 +274,7 @@ void process_input() {
     }
 
     if (keystate[SDL_SCANCODE_E] || keystate[SDL_SCANCODE_PAGEDOWN]) {
-        rotate(+rotspeed);
+        rotate(rotspeed);
     }
 
     if (keystate[SDL_SCANCODE_W] || keystate[SDL_SCANCODE_UP]) {
@@ -389,8 +391,25 @@ void draw()
     }
 }
 
+void destroy()
+{
+    for (int i = 0; i < texture_paths->size(); i++) {
+        SDL_FreeSurface(textures[i]);
+    };
+    SDL_DestroyRenderer(state.renderer);
+    SDL_DestroyWindow(state.window);
+    SDL_Quit();
+}
+
 void main_loop()
 {
+    #ifdef __EMSCRIPTEN__
+    if (state.quit) {
+        destroy();
+        emscripten_cancel_main_loop();
+    }
+    #endif
+
     process_input();
 
     // clear framebuf? i think??
@@ -412,26 +431,13 @@ void main_loop()
     SDL_RenderPresent(state.renderer);
 }
 
-void destroy()
-{
-    SDL_DestroyRenderer(state.renderer);
-    SDL_DestroyWindow(state.window);
-    SDL_Quit();
-}
-
 int main()
 {
     setupSDL();
     init();
 
-    #ifdef WEBBUILD
-        emscripten_set_main_loop(main_loop, 60, true);
-    #else
-        while (!state.quit) {
-            main_loop();
-        }
+    #ifdef __EMSCRIPTEN__
+        emscripten_set_main_loop(main_loop, 0, true);
     #endif
-
-    destroy();
     return EXIT_SUCCESS;
 }

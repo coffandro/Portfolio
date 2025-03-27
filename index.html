@@ -24,7 +24,7 @@
                 bottom: 0;
             }
         </style>
-        <canvas id="canvas" oncontextmenu="event.preventDefault()"></canvas>
+        <canvas id="canvas"></canvas>
         <script type='text/javascript'>
             var Module = {
                 canvas: (function() { return document.getElementById('canvas'); })()
@@ -32,8 +32,11 @@
             Module.canvas.addEventListener("click", async () => {
                 await Module.canvas.requestPointerLock();
             });
+            document.addEventListener("DOMContentLoaded", function() {
+                Module.canvas.requestPointerLock();
+            });
         </script>
         <script src="index.js"></script>
-        <p id="footer">🕹 Use the arrow keys to move the texture around.</p>
+        <p id="footer">🕹 Click the window to use mouse, then use arrow keys and mouse to look around.</p>
     </body>
 </html>

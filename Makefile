@@ -9,36 +9,14 @@ $(BIN):
 web-release: $(BIN)
 	rm -f $(BIN)/index.html
 	cp -u $(HTMLFILE) $(BIN)
-	emcc src/main.cpp \
-	-DWEBBUILD=1 \
-	-s WASM=1 \
+	emcc --bind \
 	-s USE_SDL=2 \
 	-s USE_SDL_IMAGE=2 \
+	-o $(BIN)/index.js \
+	src/main.cpp \
+	-sALLOW_MEMORY_GROWTH \
 	-s SDL2_IMAGE_FORMATS='["png"]' \
-	-o $(BIN)/index.js
+	--preload-file assets/ \
+	--use-preload-plugins \
 
-web-debug: $(BIN)
-	rm -f $(BIN)/index.html
-	emcc src/main.cpp \
-	-DWEBBUILD=1 \
-	-s WASM=1 \
-	-s USE_SDL=2 \
-	-s USE_SDL_IMAGE=2 \
-	-s SDL2_IMAGE_FORMATS='["png"]' \
-	-o $(BIN)/index.html
-
-linux-release: $(BIN)
-	gcc src/main.cpp \
-	-lSDL2 \
-	-lm \
-	-lstdc++ \
-	-o $(BIN)/main
-
-linux-release: $(BIN)
-	gcc src/main.cpp \
-	-lSDL2 \
-	-lm \
-	-lstdc++ \
-	-o $(BIN)/main
-
-all: $(BIN)	web-release	linux-release
+all: $(BIN)	web-release
