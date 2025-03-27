@@ -1,4 +1,4 @@
-BIN = bin
+BIN = ./
 HTMLFILE = src/index.html
 
 PATH_SDL_LINUX = /usr/include/SDL2
