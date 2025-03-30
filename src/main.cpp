@@ -31,8 +31,8 @@ typedef size_t   usize;
 typedef ssize_t  isize;
 
 // Define window dimensions
-#define WINDOW_WIDTH 640
-#define WINDOW_HEIGHT 400
+#define WINDOW_WIDTH 320
+#define WINDOW_HEIGHT 200
 #define WINDOW_SCALE 1
 
 // Define vector 2 with float and int
@@ -90,17 +90,17 @@ static u8 MAPDATA[MAP_SIZE * MAP_SIZE] = {
 static std::string links[4] = {
     "", // 0
     "", // 1
-    "", // 2
-    "https://fallout4london.com/", // 3
+    "https://fallout4london.com/", // 2
 };
-
-std::string texture_paths[4] = {
-    "",
-    "assets/Brick.jpg",
-    "assets/Brick.jpg",
-    "assets/FalloutLondonLogo.bmp"
+#define TEXTURE_AMOUNT 3
+#define TEXTURE_WIDTH 320
+#define TEXTURE_HEIGHT 320
+std::string texture_paths[TEXTURE_AMOUNT] = {
+    "assets/Brick.png",
+    "assets/Guide.png",
+    "assets/FalloutLondonLogo.png"
 };
-SDL_Surface* textures[4];
+SDL_Surface* textures[TEXTURE_AMOUNT];
 
 // The struct containing most of the games actually... 
 // important stuffs
@@ -149,7 +149,7 @@ void setupSDL()
     // create SDL window and check if working
     state.window =
         SDL_CreateWindow(
-            "DEMO",
+            "Portfolio",
             SDL_WINDOWPOS_CENTERED_DISPLAY(0),
             SDL_WINDOWPOS_CENTERED_DISPLAY(0),
             WINDOW_WIDTH * WINDOW_SCALE,
@@ -192,7 +192,7 @@ void init()
     // still unsure
     state.plane = (v2) { 0.0f, 0.66f };
 
-    for(unsigned int i = 0; i < sizeof(texture_paths)/sizeof(texture_paths[0]); i++) {
+    for(unsigned int i = 0; i < TEXTURE_AMOUNT; i++) {
         if (texture_paths[i] != ""){ 
             textures[i] = IMG_Load(texture_paths[i].c_str());
             ASSERT(
@@ -404,26 +404,26 @@ void draw()
         else           wallX = state.pos.x + state.perpWallDist * dir.x;
         wallX -= floor((wallX));
         //x coordinate on the texture
-        int texX = -int(wallX * double(textures[hit.val]->w));
-        if(hit.side == 0 && dir.x > 0) texX = textures[hit.val]->w - texX - 1;
-        if(hit.side == 1 && dir.y < 0) texX = textures[hit.val]->w - texX - 1;
+        int texX = -int(wallX * double(TEXTURE_WIDTH));
+        if(hit.side == 0 && dir.x > 0) texX = TEXTURE_WIDTH - texX - 1;
+        if(hit.side == 1 && dir.y < 0) texX = TEXTURE_WIDTH - texX - 1;
 
         // How much to increase the texture coordinate per screen pixel
-        double texStep = 1.0 * textures[hit.val]->h / h;
+        double texStep = 1.0 * TEXTURE_HEIGHT / h;
         // Starting texture coordinate
         double texPos = (y0 - pitch - WINDOW_HEIGHT / 2 + h / 2) * texStep;
         for (int y = y0; y <= y1; y++) {
             // Cast the texture coordinate to integer, and mask with (texHeight - 1) in case of overflow
-            int texY = -((int)texPos & (textures[hit.val]->h - 1));
+            int texY = -((int)texPos & (TEXTURE_HEIGHT - 1));
             texPos += texStep;
             u32 color = getpixel(textures[hit.val], texX, texY);
             
-            // if (hit.side == 1) {
-            //     const u32
-            //         br = ((color & 0xFF00FF) * 0xC0) >> 8,
-            //         g  = ((color & 0x00FF00) * 0xC0) >> 8;
-            //     color = 0xFF000000 | (br & 0xFF00FF) | (g & 0x00FF00);
-            // }
+            if (hit.side == 1) {
+                const u32
+                    br = ((color & 0xFF00FF) * 0xC0) >> 8,
+                    g  = ((color & 0x00FF00) * 0xC0) >> 8;
+                color = 0xFF000000 | (br & 0xFF00FF) | (g & 0x00FF00);
+            }
             
             state.pixels[(y * WINDOW_WIDTH) + x] = color;
         }
