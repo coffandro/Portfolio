@@ -26,6 +26,9 @@
             }
         </style>
         <canvas id="canvas"></canvas>
+        <div id="popup">
+            
+        </div>
         <script type='text/javascript'>
             var Module = {
                 canvas: (function() { return document.getElementById('canvas'); })()
@@ -35,10 +38,15 @@
             });
             document.addEventListener("DOMContentLoaded", function() {
                 Module.canvas.requestPointerLock();
-                
             });
+
+            Module['onRuntimeInitialized'] = function() {
+                console.log("wasm loaded ");
+                var int_sqrt = Module.cwrap('int_sqrt', 'number', ['number'])
+                alert(int_sqrt(10));
+            }
+
         </script>
         <script src="index.js"></script>
-        <p id="footer">🕹 Click the window to use mouse, then use arrow keys and mouse to look around.</p>
     </body>
 </html>

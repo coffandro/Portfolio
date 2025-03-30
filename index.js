@@ -31,7 +31,7 @@ if (ENVIRONMENT_IS_NODE) {
 
 // --pre-jses are emitted after the Module integration code, so that they can
 // refer to Module (if they choose; they can also define Module)
-// include: /tmp/tmptrmdnx2a.js
+// include: /tmp/tmpcm7x3a04.js
 
   Module['expectedDataFileDownloads'] ??= 0;
   Module['expectedDataFileDownloads']++;
@@ -211,25 +211,25 @@ Module['FS_createPath']("/", "cache_assets", true, true);
     }
 
     }
-    loadPackage({"files": [{"filename": "/cache_assets/Brick.png", "start": 0, "end": 55056}, {"filename": "/cache_assets/FalloutLondonLogo.png", "start": 55056, "end": 192333}, {"filename": "/cache_assets/Guide.png", "start": 192333, "end": 219297}], "remote_package_size": 219297});
+    loadPackage({"files": [{"filename": "/cache_assets/Brick.png", "start": 0, "end": 82408}, {"filename": "/cache_assets/FalloutLondonLogo.png", "start": 82408, "end": 233221}, {"filename": "/cache_assets/Guide.png", "start": 233221, "end": 275714}], "remote_package_size": 275714});
 
   })();
 
-// end include: /tmp/tmptrmdnx2a.js
-// include: /tmp/tmpqrmcwq12.js
+// end include: /tmp/tmpcm7x3a04.js
+// include: /tmp/tmpyokf4l6o.js
 
     // All the pre-js content up to here must remain later on, we need to run
     // it.
     if (Module['$ww'] || (typeof ENVIRONMENT_IS_PTHREAD != 'undefined' && ENVIRONMENT_IS_PTHREAD)) Module['preRun'] = [];
     var necessaryPreJSTasks = Module['preRun'].slice();
-  // end include: /tmp/tmpqrmcwq12.js
-// include: /tmp/tmpru8vm6xv.js
+  // end include: /tmp/tmpyokf4l6o.js
+// include: /tmp/tmp46p5z0zo.js
 
     if (!Module['preRun']) throw 'Module.preRun should exist because file support used it; did a pre-js delete it?';
     necessaryPreJSTasks.forEach((task) => {
       if (Module['preRun'].indexOf(task) < 0) throw 'All preRun tasks that exist before user pre-js code should remain after; did you replace Module or modify Module.preRun?';
     });
-  // end include: /tmp/tmpru8vm6xv.js
+  // end include: /tmp/tmp46p5z0zo.js
 
 
 // Sometimes an existing Module object exists with properties
