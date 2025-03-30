@@ -16,6 +16,7 @@ build: $(BIN)
 	-s USE_SDL_IMAGE=2 \
 	-o $(BIN)/index.js \
 	src/main.cpp \
+	-sEXIT_RUNTIME \
 	-s SDL2_IMAGE_FORMATS='["png", "bmp", "jpg"]' \
 	--preload-file assets/ \
 	--use-preload-plugins 

@@ -14,8 +14,11 @@
 #endif
 
 // Do something, if it goes wrong break the program
-#define ASSERT(_e, ...) if (!(_e)) { fprintf(stderr, __VA_ARGS__); exit(1); }
-
+#ifdef __EMSCRIPTEN__
+#define ASSERT(_e, ...) if (!(_e)) { std::cout << __VA_ARGS__; emscripten_force_exit(1); }
+#else
+#define ASSERT(_e, ...) if (!(_e)) { std::cout << __VA_ARGS__; exit(1); }
+#endif
 // Define more readable definitions
 typedef float    f32;
 typedef double   f64;
@@ -90,7 +93,8 @@ static u8 MAPDATA[MAP_SIZE * MAP_SIZE] = {
 static std::string links[4] = {
     "", // 0
     "", // 1
-    "https://fallout4london.com/", // 2
+    ""
+    //"https://fallout4london.com/", // 2
 };
 #define TEXTURE_AMOUNT 3
 #define TEXTURE_WIDTH 320
@@ -244,7 +248,7 @@ void process_input() {
 
     if (clicked == 1) {
         std::string link = links[state.current_target.val];
-        if (link != state.last_link) {
+        if (link != state.last_link && link != "") {
             state.last_link = link;
             std::string code = "window.open(" + link + ")";
             #ifdef __EMSCRIPTEN__
@@ -296,6 +300,9 @@ void process_input() {
 Uint32 getpixel(SDL_Surface *surface, int x, int y)
 {
     int bpp = surface->format->BytesPerPixel;
+    // x = min(max(x,TEXTURE_WIDTH-1),0);
+    // y = min(max(y,TEXTURE_WIDTH-1),0);
+
     /* Here p is the address to the pixel we want to retrieve */
     Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
 
@@ -404,7 +411,7 @@ void draw()
         else           wallX = state.pos.x + state.perpWallDist * dir.x;
         wallX -= floor((wallX));
         //x coordinate on the texture
-        int texX = -int(wallX * double(TEXTURE_WIDTH));
+        int texX = int(wallX * double(TEXTURE_WIDTH));
         if(hit.side == 0 && dir.x > 0) texX = TEXTURE_WIDTH - texX - 1;
         if(hit.side == 1 && dir.y < 0) texX = TEXTURE_WIDTH - texX - 1;
 
@@ -414,9 +421,14 @@ void draw()
         double texPos = (y0 - pitch - WINDOW_HEIGHT / 2 + h / 2) * texStep;
         for (int y = y0; y <= y1; y++) {
             // Cast the texture coordinate to integer, and mask with (texHeight - 1) in case of overflow
-            int texY = -((int)texPos & (TEXTURE_HEIGHT - 1));
+            int texY = (int)texPos & (TEXTURE_HEIGHT - 1);
+
+            texX = std::clamp(texX, 0, TEXTURE_WIDTH - 1);
+            texY = std::clamp(texY, 0, TEXTURE_HEIGHT - 1);
+
             texPos += texStep;
-            u32 color = getpixel(textures[hit.val], texX, texY);
+            
+            u32 color = getpixel(textures[hit.val-1], texX, texY);
             
             if (hit.side == 1) {
                 const u32
