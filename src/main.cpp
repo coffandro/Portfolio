@@ -190,7 +190,7 @@ void init()
     SDL_SetRelativeMouseMode(SDL_TRUE);
     // set start position of player, may consider removing
     // for 0,0 start
-    state.pos = (v2) { 1, 9.5 };
+    state.pos = (v2) { 1.5, 9.5 };
     // set the current direction of the player
     state.dir = normalize(((v2) { 1.0f, 0.1f }));
     // still unsure
@@ -215,25 +215,45 @@ static void rotate(f32 rot) {
     state.plane.y = p.x * sin(rot) + p.y * cos(rot);
 }
 
-void move(float x, float y, bool reverse = false)
-{
+bool can_move_to(f32 new_x, f32 new_y) {
+    for(int _x = 0; _x < MAP_SIZE; _x++) {
+        for(int _y = 0; _y < MAP_SIZE; _y++) {
+            if (MAPDATA[(_y*MAP_SIZE)+_x] != 0 && 
+                MAPDATA[(_y*MAP_SIZE)+_x] == MAPDATA[(int(new_y)*MAP_SIZE)+int(new_x)]
+            ) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+void move(float x, float y, bool reverse = false) {
     v2 cpos = state.pos;
 
     if (reverse)
     {
-        cpos.x -= x;
-        cpos.y -= y;
+        if (can_move_to(cpos.x + x, cpos.y)) {
+            cpos.x -= x;
+        }
+
+        if (can_move_to(cpos.x, cpos.y + y)) {
+            cpos.y -= y;
+        }
     } else {
-        cpos.x += x;
-        cpos.y += y;
+        if (can_move_to(cpos.x + x, cpos.y)) {
+            cpos.x += x;
+        }
+
+        if (can_move_to(cpos.x, cpos.y + y)) {
+            cpos.y += y;
+        }
     }
 
-    if (cpos.x >= 1
-        && cpos.x <= MAP_SIZE - 1
-        && cpos.y >= 1
-        && cpos.y <= MAP_SIZE - 1
-        )
-    {
+    std::cout << cpos.x << " " << cpos.y << "\n";
+    std::cout << int(cpos.x) << " " << int(cpos.y) << "\n";
+
+    if (can_move_to(cpos.x, cpos.y)) {
         state.pos = cpos;
     }
 }
@@ -291,9 +311,8 @@ void process_input() {
     }
 
     if (keystate[SDL_SCANCODE_D] || keystate[SDL_SCANCODE_RIGHT]) {
-        move((state.dir.x * cos(-1.5f) - state.dir.y * sin(-1.5f)) * movespeed,
-            (state.dir.x * sin(-1.5f) + state.dir.y * cos(-1.5f)) * movespeed,
-            true);
+        move((state.dir.x * cos(1.5f) - state.dir.y * sin(1.5f)) * movespeed,
+            (state.dir.x * sin(1.5f) + state.dir.y * cos(1.5f)) * movespeed);
     }
 }
 

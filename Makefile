@@ -16,6 +16,7 @@ regen-assets:
 	for i in $(ASSET_FILES); do \
 		convert -flip $$i cache_$$i; \
 		convert -flop cache_$$i cache_$$i; \
+		convert -resize 320x320 cache_$$i cache_$$i; \
 	done
 
 build: $(BIN) regen-assets
