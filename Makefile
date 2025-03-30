@@ -15,8 +15,16 @@ web-release: $(BIN)
 	-o $(BIN)/index.js \
 	src/main.cpp \
 	-sALLOW_MEMORY_GROWTH \
-	-s SDL2_IMAGE_FORMATS='["png"]' \
 	--preload-file assets/ \
 	--use-preload-plugins \
+	-s SDL2_IMAGE_FORMATS='["png", "bmp", "jpg"]' 
+
+linux-release: $(BIN)
+	gcc src/main.cpp \
+	-lSDL2 \
+	-lSDL2_image \
+	-lm \
+	-lstdc++ \
+	-o main
 
 all: $(BIN)	web-release

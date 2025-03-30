@@ -94,10 +94,13 @@ static std::string links[4] = {
     "https://fallout4london.com/", // 3
 };
 
-std::string texture_paths[1] = {
-    "assets/FalloutLondonLogo.png"
+std::string texture_paths[4] = {
+    "",
+    "assets/Brick.jpg",
+    "assets/Brick.jpg",
+    "assets/Brick.jpg"
 };
-SDL_Surface* textures[1];
+SDL_Surface* textures[4];
 
 // The struct containing most of the games actually... 
 // important stuffs
@@ -190,11 +193,13 @@ void init()
     state.plane = (v2) { 0.0f, 0.66f };
 
     for(unsigned int i = 0; i < sizeof(texture_paths)/sizeof(texture_paths[0]); i++) {
-        textures[i] = IMG_Load(texture_paths[i].c_str());
-        std::cout << i << "/" << texture_paths->size() <<" "<< texture_paths[i].c_str() << "\n";
-        ASSERT(
-            textures[i], 
-            "failed to create SDL surface: %s\n", IMG_GetError());
+        if (texture_paths[i] != ""){ 
+            textures[i] = IMG_Load(texture_paths[i].c_str());
+            ASSERT(
+                textures[i], 
+                "failed to create SDL surface: %s\n", IMG_GetError());
+            SDL_LockSurface(textures[i]);
+        }
     }
 }
 
@@ -208,7 +213,6 @@ static void rotate(f32 rot) {
 
 void move(float x, float y, bool reverse = false)
 {
-    //std::cout << std::to_string(state.FDist) + "\n";
     v2 cpos = state.pos;
 
     if (reverse)
@@ -231,10 +235,6 @@ void move(float x, float y, bool reverse = false)
 }
 
 void process_input() {
-    // if (!state.mouse_active) {
-    //     return;
-    // }
-
     const f32
         rotspeed = 3.0f * 0.016f,
         movespeed = 3.0f * 0.016f;
@@ -404,19 +404,19 @@ void draw()
         else           wallX = state.pos.x + state.perpWallDist * dir.x;
         wallX -= floor((wallX));
         //x coordinate on the texture
-        int texX = -int(wallX * double(textures[0]->w));
-        if(hit.side == 0 && dir.x > 0) texX = textures[0]->w - texX - 1;
-        if(hit.side == 1 && dir.y < 0) texX = textures[0]->w - texX - 1;
+        int texX = -int(wallX * double(textures[hit.val]->w));
+        if(hit.side == 0 && dir.x > 0) texX = textures[hit.val]->w - texX - 1;
+        if(hit.side == 1 && dir.y < 0) texX = textures[hit.val]->w - texX - 1;
 
         // How much to increase the texture coordinate per screen pixel
-        double texStep = 1.0 * textures[0]->h / h;
+        double texStep = 1.0 * textures[hit.val]->h / h;
         // Starting texture coordinate
         double texPos = (y0 - pitch - WINDOW_HEIGHT / 2 + h / 2) * texStep;
         for (int y = y0; y <= y1; y++) {
             // Cast the texture coordinate to integer, and mask with (texHeight - 1) in case of overflow
-            int texY = -((int)texPos & (textures[0]->h - 1));
+            int texY = -((int)texPos & (textures[hit.val]->h - 1));
             texPos += texStep;
-            u32 color = getpixel(textures[0], texX, texY);
+            u32 color = getpixel(textures[hit.val], texX, texY);
             
             if (hit.side == 1) {
                 const u32
@@ -426,10 +426,6 @@ void draw()
             }
             
             state.pixels[(y * WINDOW_WIDTH) + x] = color;
-        }
-
-        if (x == WINDOW_WIDTH/2) {
-            std::cout << state.pixels[(50 * WINDOW_WIDTH) + x] << "\n";
         }
 
         // bottom of screen
