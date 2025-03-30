@@ -31,9 +31,9 @@ typedef size_t   usize;
 typedef ssize_t  isize;
 
 // Define window dimensions
-#define WINDOW_WIDTH 320
-#define WINDOW_HEIGHT 200
-#define WINDOW_SCALE 2
+#define WINDOW_WIDTH 640
+#define WINDOW_HEIGHT 400
+#define WINDOW_SCALE 1
 
 // Define vector 2 with float and int
 typedef struct v2_s { f32 x, y; } v2;
@@ -75,7 +75,7 @@ static u8 MAPDATA[MAP_SIZE * MAP_SIZE] = {
     1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
     1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
     1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-    1, 0, 0, 0, 0, 0, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 0, 0, 2, 3, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1,
     1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
     1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
     1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
@@ -112,7 +112,7 @@ struct {
     // a bool to keep track of whether to run the mainloop or not
     bool quit, mouse_active;
     // the distance to the object in front.
-    f32 FDist;
+    f32 perpWallDist;
     hit_point current_target;
 
     std::string last_link;
@@ -133,14 +133,6 @@ static void verline(int x, int y0, int y1, u32 color) {
     for (int y = y0; y <= y1; y++) {
         state.pixels[(y * WINDOW_WIDTH) + x] = color;
     }
-}
-
-static void texture_verline(int x, int y0, int y1, const char* image) {
-    // for every int between y0 and y1 on the x cord place a
-    // pixel on the screen with the color 
-    // for (int y = y0; y <= y1; y++) {
-    //     state.pixels[(y * WINDOW_WIDTH) + x] = color;
-    // }
 }
 
 void setupSDL()
@@ -219,7 +211,7 @@ void move(float x, float y, bool reverse = false)
     //std::cout << std::to_string(state.FDist) + "\n";
     v2 cpos = state.pos;
 
-    if (reverse==true)
+    if (reverse)
     {
         cpos.x -= x;
         cpos.y -= y;
@@ -262,7 +254,7 @@ void process_input() {
     }
 
     if (state.old_mouse_x != state.mouse_x) {
-        int diff = std::clamp((state.mouse_x-state.old_mouse_x)/10, -1, 1);
+        int diff = std::clamp((state.mouse_x-state.old_mouse_x)/2, -1, 1);
         rotate(diff * rotspeed);
         state.mouse_x = WINDOW_WIDTH/2;
         state.old_mouse_x = state.mouse_x;
@@ -300,6 +292,39 @@ void process_input() {
             true);
     }
 }
+
+Uint32 getpixel(SDL_Surface *surface, int x, int y)
+{
+    int bpp = surface->format->BytesPerPixel;
+    /* Here p is the address to the pixel we want to retrieve */
+    Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * bpp;
+
+switch (bpp)
+{
+    case 1:
+        return *p;
+        break;
+
+    case 2:
+        return *(Uint16 *)p;
+        break;
+
+    case 3:
+        if (SDL_BYTEORDER == SDL_BIG_ENDIAN)
+            return p[0] << 16 | p[1] << 8 | p[2];
+        else
+            return p[0] | p[1] << 8 | p[2] << 16;
+            break;
+
+        case 4:
+            return *(Uint32 *)p;
+            break;
+
+        default:
+            return 0;       /* shouldn't happen, but avoids warnings */
+      }
+}
+
 
 void draw()
 {
@@ -350,44 +375,67 @@ void draw()
             hit.val = MAPDATA[ipos.y * MAP_SIZE + ipos.x];
         }
 
-        // set colors
-        u32 color;
-        switch (hit.val) {
-            case 1: color = 0xFF00FFFF; break;
-            case 2: color = 0xFFFFFFFF; break;
-            case 3: color = 0xFFFF00FF; break;
-            case 4: color = 0xFFFFFFFF; break;
-        }
-
-        // darken colors on y-sides
-        if (hit.side == 1) {
-            const u32
-                br = ((color & 0xFF00FF) * 0xC0) >> 8,
-                g  = ((color & 0x00FF00) * 0xC0) >> 8;
-
-            color = 0xFF000000 | (br & 0xFF00FF) | (g & 0x00FF00);
-        }
-
         // distance to hit
-        state.FDist =
+        state.perpWallDist =
             hit.side == 0 ?
                 (sidedist.x - deltadist.x)
                 : (sidedist.y - deltadist.y);
         
         if (x == WINDOW_WIDTH/2) {
-            state.current_target = hit;
+            if (state.perpWallDist < 10) {
+                state.current_target = hit;
+            } else {
+                state.current_target = { 0, 0, { 0.0f, 0.0f } };
+            }
         }
+
+        int pitch = 10;
 
         // perform perspective division, calculate line height relative to
         // screen center
-        const int
-            h = (int) (WINDOW_HEIGHT / state.FDist),
-            y0 = max((WINDOW_HEIGHT / 2) - (h / 2), 0),
-            y1 = min((WINDOW_HEIGHT / 2) + (h / 2), WINDOW_HEIGHT - 1);
+        int
+            h = (int) (WINDOW_HEIGHT / state.perpWallDist),
+            y0 = max((WINDOW_HEIGHT / 2) - (h / 2) + (pitch), 0),
+            y1 = min((WINDOW_HEIGHT / 2) + (h / 2) + (pitch), WINDOW_HEIGHT - 1);
 
-        verline(x, 0, y0, 0xFF202020);
-        verline(x, y0, y1, color);
-        verline(x, y1, WINDOW_HEIGHT - 1, 0xFF505050);
+        //calculate value of wallX
+        double wallX; //where exactly the wall was hit
+        if (hit.side == 0) wallX = state.pos.y + state.perpWallDist * dir.y;
+        else           wallX = state.pos.x + state.perpWallDist * dir.x;
+        wallX -= floor((wallX));
+        //x coordinate on the texture
+        int texX = -int(wallX * double(textures[0]->w));
+        if(hit.side == 0 && dir.x > 0) texX = textures[0]->w - texX - 1;
+        if(hit.side == 1 && dir.y < 0) texX = textures[0]->w - texX - 1;
+
+        // How much to increase the texture coordinate per screen pixel
+        double texStep = 1.0 * textures[0]->h / h;
+        // Starting texture coordinate
+        double texPos = (y0 - pitch - WINDOW_HEIGHT / 2 + h / 2) * texStep;
+        for (int y = y0; y <= y1; y++) {
+            // Cast the texture coordinate to integer, and mask with (texHeight - 1) in case of overflow
+            int texY = -((int)texPos & (textures[0]->h - 1));
+            texPos += texStep;
+            u32 color = getpixel(textures[0], texX, texY);
+            
+            if (hit.side == 1) {
+                const u32
+                    br = ((color & 0xFF00FF) * 0xC0) >> 8,
+                    g  = ((color & 0x00FF00) * 0xC0) >> 8;
+                color = 0xFF000000 | (br & 0xFF00FF) | (g & 0x00FF00);
+            }
+            
+            state.pixels[(y * WINDOW_WIDTH) + x] = color;
+        }
+
+        if (x == WINDOW_WIDTH/2) {
+            std::cout << state.pixels[(50 * WINDOW_WIDTH) + x] << "\n";
+        }
+
+        // bottom of screen
+        verline(x, 0, y0, 0x808080);
+        // top of screen
+        verline(x, y1, WINDOW_HEIGHT - 1, 0xA9A9A9);
     }
 }
 
@@ -437,7 +485,7 @@ int main()
     init();
 
     #ifdef __EMSCRIPTEN__
-        emscripten_set_main_loop(main_loop, 0, true);
+        emscripten_set_main_loop(main_loop, 60, true);
     #endif
     return EXIT_SUCCESS;
 }
