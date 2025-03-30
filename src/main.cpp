@@ -98,7 +98,7 @@ std::string texture_paths[4] = {
     "",
     "assets/Brick.jpg",
     "assets/Brick.jpg",
-    "assets/Brick.jpg"
+    "assets/FalloutLondonLogo.bmp"
 };
 SDL_Surface* textures[4];
 
@@ -418,12 +418,12 @@ void draw()
             texPos += texStep;
             u32 color = getpixel(textures[hit.val], texX, texY);
             
-            if (hit.side == 1) {
-                const u32
-                    br = ((color & 0xFF00FF) * 0xC0) >> 8,
-                    g  = ((color & 0x00FF00) * 0xC0) >> 8;
-                color = 0xFF000000 | (br & 0xFF00FF) | (g & 0x00FF00);
-            }
+            // if (hit.side == 1) {
+            //     const u32
+            //         br = ((color & 0xFF00FF) * 0xC0) >> 8,
+            //         g  = ((color & 0x00FF00) * 0xC0) >> 8;
+            //     color = 0xFF000000 | (br & 0xFF00FF) | (g & 0x00FF00);
+            // }
             
             state.pixels[(y * WINDOW_WIDTH) + x] = color;
         }
@@ -451,6 +451,7 @@ void main_loop()
     if (state.quit) {
         destroy();
         emscripten_cancel_main_loop();
+        return;
     }
     #endif
 
@@ -483,5 +484,6 @@ int main()
     #ifdef __EMSCRIPTEN__
         emscripten_set_main_loop(main_loop, 60, true);
     #endif
+    destroy();
     return EXIT_SUCCESS;
 }
