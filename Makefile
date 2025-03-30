@@ -8,7 +8,17 @@ PATH_SDL_LINUX = /usr/include/SDL2
 $(BIN):
 	mkdir -p $@
 
-build: $(BIN)
+ASSET_FILES := $(shell find assets -name '*.png')
+
+regen-assets:
+	rm -r cache_assets
+	mkdir -p cache_assets
+	for i in $(ASSET_FILES); do \
+		convert -flip $$i cache_$$i; \
+		convert -flop cache_$$i cache_$$i; \
+	done
+
+build: $(BIN) regen-assets
 	rm -f $(BIN)/index.*
 	cp -u $(HTMLFILE) $(BIN)
 	emcc --bind \
@@ -17,8 +27,8 @@ build: $(BIN)
 	-o $(BIN)/index.js \
 	src/main.cpp \
 	-sEXIT_RUNTIME \
-	-s SDL2_IMAGE_FORMATS='["png", "bmp", "jpg"]' \
-	--preload-file assets/ \
+	-s SDL2_IMAGE_FORMATS='["png"]' \
+	--preload-file cache_assets/ \
 	--use-preload-plugins 
 
 all: $(BIN)	build

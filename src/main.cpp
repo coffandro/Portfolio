@@ -15,9 +15,9 @@
 
 // Do something, if it goes wrong break the program
 #ifdef __EMSCRIPTEN__
-#define ASSERT(_e, ...) if (!(_e)) { std::cout << __VA_ARGS__; emscripten_force_exit(1); }
+#define ASSERT(_e, ...) if (!(_e)) { fprintf(stderr, __VA_ARGS__); emscripten_force_exit(1); }
 #else
-#define ASSERT(_e, ...) if (!(_e)) { std::cout << __VA_ARGS__; exit(1); }
+#define ASSERT(_e, ...) if (!(_e)) { fprintf(stderr, __VA_ARGS__); exit(1); }
 #endif
 // Define more readable definitions
 typedef float    f32;
@@ -100,9 +100,9 @@ static std::string links[4] = {
 #define TEXTURE_WIDTH 320
 #define TEXTURE_HEIGHT 320
 std::string texture_paths[TEXTURE_AMOUNT] = {
-    "assets/Brick.png",
-    "assets/Guide.png",
-    "assets/FalloutLondonLogo.png"
+    "cache_assets/Brick.png",
+    "cache_assets/Guide.png",
+    "cache_assets/FalloutLondonLogo.png"
 };
 SDL_Surface* textures[TEXTURE_AMOUNT];
 
@@ -421,7 +421,7 @@ void draw()
         double texPos = (y0 - pitch - WINDOW_HEIGHT / 2 + h / 2) * texStep;
         for (int y = y0; y <= y1; y++) {
             // Cast the texture coordinate to integer, and mask with (texHeight - 1) in case of overflow
-            int texY = (int)texPos & (TEXTURE_HEIGHT - 1);
+            int texY = (int)texPos;
 
             texX = std::clamp(texX, 0, TEXTURE_WIDTH - 1);
             texY = std::clamp(texY, 0, TEXTURE_HEIGHT - 1);
