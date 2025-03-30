@@ -218,10 +218,12 @@ static void rotate(f32 rot) {
 bool can_move_to(f32 new_x, f32 new_y) {
     for(int _x = 0; _x < MAP_SIZE; _x++) {
         for(int _y = 0; _y < MAP_SIZE; _y++) {
-            if (MAPDATA[(_y*MAP_SIZE)+_x] != 0 && 
-                MAPDATA[(_y*MAP_SIZE)+_x] == MAPDATA[(int(new_y)*MAP_SIZE)+int(new_x)]
-            ) {
-                return false;
+            if (MAPDATA[(_y*MAP_SIZE)+_x] != 0) {
+                if (MAPDATA[(_y*MAP_SIZE)+_x] == 
+                    MAPDATA[(int(new_y)*MAP_SIZE)+int(new_x)]
+                ) {
+                    return false;
+                }
             }
         }
     }
