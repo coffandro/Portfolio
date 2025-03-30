@@ -34,8 +34,8 @@ typedef size_t   usize;
 typedef ssize_t  isize;
 
 // Define window dimensions
-#define WINDOW_WIDTH 320
-#define WINDOW_HEIGHT 200
+#define WINDOW_WIDTH 640
+#define WINDOW_HEIGHT 400
 #define WINDOW_SCALE 1
 
 // Define vector 2 with float and int
@@ -90,12 +90,6 @@ static u8 MAPDATA[MAP_SIZE * MAP_SIZE] = {
     1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 };
 
-static std::string links[4] = {
-    "", // 0
-    "", // 1
-    ""
-    //"https://fallout4london.com/", // 2
-};
 #define TEXTURE_AMOUNT 3
 #define TEXTURE_WIDTH 320
 #define TEXTURE_HEIGHT 320
@@ -105,6 +99,12 @@ std::string texture_paths[TEXTURE_AMOUNT] = {
     "cache_assets/FalloutLondonLogo.png"
 };
 SDL_Surface* textures[TEXTURE_AMOUNT];
+
+static std::string links[TEXTURE_AMOUNT] = {
+    "", // 0
+    "", // 1
+    "https://fallout4london.com/", // 2
+};
 
 // The struct containing most of the games actually... 
 // important stuffs
@@ -252,9 +252,6 @@ void move(float x, float y, bool reverse = false) {
         }
     }
 
-    std::cout << cpos.x << " " << cpos.y << "\n";
-    std::cout << int(cpos.x) << " " << int(cpos.y) << "\n";
-
     if (can_move_to(cpos.x, cpos.y)) {
         state.pos = cpos;
     }
@@ -269,7 +266,7 @@ void process_input() {
     const u32 clicked = SDL_GetMouseState(&state.mouse_x, NULL);
 
     if (clicked == 1) {
-        std::string link = links[state.current_target.val];
+        std::string link = links[state.current_target.val - 1];
         if (link != state.last_link && link != "") {
             state.last_link = link;
             std::string code = "window.open(" + link + ")";
