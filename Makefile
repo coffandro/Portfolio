@@ -28,6 +28,8 @@ build: $(BIN) regen-assets
 	-o $(BIN)/index.js \
 	src/main.cpp \
 	-sEXIT_RUNTIME \
+	-sEXPORTED_FUNCTIONS=_main,_int_sqrt \
+	-sEXPORTED_RUNTIME_METHODS=ccall,cwrap \
 	-s SDL2_IMAGE_FORMATS='["png"]' \
 	--preload-file cache_assets/ \
 	--use-preload-plugins 
