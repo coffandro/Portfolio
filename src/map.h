@@ -55,7 +55,7 @@ static std::string texture_paths[TEXTURE_AMOUNT] = {
 };
 static SDL_Surface* textures[TEXTURE_AMOUNT];
 
-static std::string floor_path = "cache_assets/Brick.png";
+static std::string floor_path = "cache_assets/Floor.png";
 static std::string ceiling_path = "cache_assets/Ceiling.png";
 
 static SDL_Surface* floor_texture;

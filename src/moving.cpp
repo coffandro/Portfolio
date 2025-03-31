@@ -106,10 +106,6 @@ void process_input() {
         move((state.dir.x * cos(1.5f) - state.dir.y * sin(1.5f)) * movespeed,
             (state.dir.x * sin(1.5f) + state.dir.y * cos(1.5f)) * movespeed);
     }
-
-    if (keystate[SDL_SCANCODE_PAGEDOWN]) {
-        std::cout << state.pos.x << " " << state.pos.y << "\n";
-    }
 }
 
 #endif
