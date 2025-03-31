@@ -66,7 +66,7 @@ static SDL_Surface* ceiling_texture;
 static const char* links[TEXTURE_AMOUNT] = {
     NULL, // 0
     NULL, // 1
-    NULL, // 2
+    "https://github.com/coffandro/Portfolio", // 2
     "https://fallout4london.com/", // 3
     "https://coffandro.itch.io/fightforforest", // 4
     "https://on-undervisning.dk/materialer/din-data", // 5
