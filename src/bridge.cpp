@@ -1,17 +1,21 @@
 #ifndef BRIDGE_CPP
 #define BRIDGE_CPP
 
-#include <math.h>
 #ifdef __EMSCRIPTEN__
     #include <emscripten.h>
 #endif
 
+typedef void(*functionPtr)(void);
+
 // No name mangling
 extern "C" {
+    static functionPtr close_function = nullptr;
 
     // Functions JS can run on app
-    int int_sqrt(int x) {
-        return sqrt(x);
+    void close_embed() {
+        if (close_function != nullptr) {
+            close_function();
+        }
     }
 
 }
@@ -19,7 +23,9 @@ extern "C" {
 #ifdef __EMSCRIPTEN__
 // Function CPP can run on JS
 EM_JS(void, open_embed, (const char* link), {
-    window.open(UTF8ToString(link));
+    if (typeof window["open_link"] === 'function') {
+        open_link(link);
+    }
 });  
 #else
 void open_embed(const char* link);

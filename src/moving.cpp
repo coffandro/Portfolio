@@ -29,26 +29,15 @@ bool can_move_to(f32 new_x, f32 new_y) {
     return true;
 }
 
-void move(float x, float y, bool reverse = false) {
+void move(float x, float y) {
     v2 cpos = state.pos;
 
-    if (reverse)
-    {
-        if (can_move_to(cpos.x + x, cpos.y)) {
-            cpos.x -= x;
-        }
+    if (can_move_to(cpos.x + x, cpos.y)) {
+        cpos.x += x;
+    }
 
-        if (can_move_to(cpos.x, cpos.y + y)) {
-            cpos.y -= y;
-        }
-    } else {
-        if (can_move_to(cpos.x + x, cpos.y)) {
-            cpos.x += x;
-        }
-
-        if (can_move_to(cpos.x, cpos.y + y)) {
-            cpos.y += y;
-        }
+    if (can_move_to(cpos.x, cpos.y + y)) {
+        cpos.y += y;
     }
 
     if (can_move_to(cpos.x, cpos.y)) {
@@ -57,6 +46,8 @@ void move(float x, float y, bool reverse = false) {
 }
 
 void process_input() {
+    if (!state.active) return;
+
     const f32
         rotspeed = 3.0f * 0.016f,
         movespeed = 3.0f * 0.016f;
@@ -94,15 +85,13 @@ void process_input() {
     }
 
     if (keystate[SDL_SCANCODE_S] || keystate[SDL_SCANCODE_DOWN]) {
-        move(state.dir.x * movespeed,
-            state.dir.y * movespeed,
-            true);
+        move(state.dir.x * -movespeed,
+            state.dir.y * -movespeed);
     }
 
     if (keystate[SDL_SCANCODE_A] || keystate[SDL_SCANCODE_LEFT]) {
-        move((state.dir.x * cos(1.5f) - state.dir.y * sin(1.5f)) * movespeed,
-            (state.dir.x * sin(1.5f) + state.dir.y * cos(1.5f)) * movespeed,
-            true);
+        move((state.dir.x * cos(-1.5f) - state.dir.y * sin(-1.5f)) * movespeed,
+            (state.dir.x * sin(-1.5f) + state.dir.y * cos(-1.5f)) * movespeed);
     }
 
     if (keystate[SDL_SCANCODE_D] || keystate[SDL_SCANCODE_RIGHT]) {

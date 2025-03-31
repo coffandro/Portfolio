@@ -13,7 +13,8 @@ struct {
     // a buffer to contain the pixels to draw on screen
     u32 pixels[WINDOW_WIDTH * WINDOW_HEIGHT];
     // a bool to keep track of whether to run the mainloop or not
-    bool quit, mouse_active;
+    bool quit;
+    bool active = false;
     // the distance to the object in front.
     f32 perpWallDist;
     hit_point current_target;
