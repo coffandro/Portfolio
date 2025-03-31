@@ -49,6 +49,7 @@ void main_loop() {
     draw();
 
     SDL_UpdateTexture(state.texture, NULL, state.pixels, WINDOW_WIDTH * 4);
+
     SDL_RenderCopyEx(
         state.renderer,
         state.texture,
@@ -56,7 +57,22 @@ void main_loop() {
         NULL,
         0.0,
         NULL,
-        SDL_FLIP_VERTICAL);
+        SDL_FLIP_VERTICAL
+    );
+
+    SDL_GetRendererOutputSize(state.renderer, &state.screen_w, &state.screen_h);
+    
+    SDL_Rect cursor_rect = {int(WINDOW_WIDTH/1.5), int(WINDOW_HEIGHT/1.5), WINDOW_WIDTH/4, WINDOW_HEIGHT/4};
+
+    SDL_RenderCopyEx(
+        state.renderer,
+        cursor_textures[state.cursor_index],
+        NULL,
+        &cursor_rect,
+        180,
+        NULL,
+        SDL_FLIP_NONE
+    );
     SDL_RenderPresent(state.renderer);
 }
 

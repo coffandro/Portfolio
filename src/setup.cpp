@@ -48,6 +48,7 @@ void setupSDL()
         "failed to create SDL texture: %s\n", SDL_GetError());
 
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, 0);
+    SDL_RenderSetLogicalSize(state.renderer, WINDOW_WIDTH, WINDOW_HEIGHT);
 }
 
 void init()
@@ -85,6 +86,15 @@ void init()
             ceiling_texture, 
             "failed to create SDL surface: %s\n", IMG_GetError());
         SDL_LockSurface(ceiling_texture);
+    }
+
+    for(unsigned int i = 0; i < CURSOR_AMOUNT; i++) {
+        if (cursor_paths[i] != ""){ 
+            cursor_textures[i] = IMG_LoadTexture(state.renderer, cursor_paths[i].c_str());
+            ASSERT(
+                cursor_textures[i], 
+                "failed to create SDL surface: %s\n", IMG_GetError());
+        }
     }
 }
 #endif

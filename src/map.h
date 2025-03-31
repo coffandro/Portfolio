@@ -77,4 +77,15 @@ static const char* links[TEXTURE_AMOUNT] = {
     "https://coffandro.itch.io/spc", // 10
 };
 
+#define CURSOR_SIZE 16
+#define CURSOR_AMOUNT 3
+
+static std::string cursor_paths[CURSOR_AMOUNT] = {
+    "cache_assets/CursorDefault.png",
+    "cache_assets/CursorHover.png",
+    "cache_assets/CursorClick.png",
+};
+
+static SDL_Texture* cursor_textures[CURSOR_AMOUNT];
+
 #endif

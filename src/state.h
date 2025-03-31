@@ -29,7 +29,10 @@ struct {
 
     int old_mouse_x, mouse_x;
     int pitch = 0;
-    
+   
+    int screen_w, screen_h;
+    int cursor_index = 0;
+
     // three vectors to keep track of the position, direction
     // and something I am yet to understand.
     v2 pos, dir, plane;

@@ -39,7 +39,7 @@ switch (bpp)
             break;
 
         case 4:
-            return *(Uint32 *)p;
+        return *(Uint32 *)p;
             break;
 
         default:
@@ -203,65 +203,65 @@ void draw()
         }
 
         //SET THE ZBUFFER FOR THE SPRITE CASTING
-        state.ZBuffer[x] = state.perpWallDist; //perpendicular distance is used
+        //state.ZBuffer[x] = state.perpWallDist; //perpendicular distance is used
     }
 
-    //after sorting the sprites, do the projection and draw them
-    for(int i = 0; i < SPRITE_AMOUNT; i++) {
-        //translate sprite position to relative to camera
-        double spriteX = sprite[state.spriteOrder[i]].x - state.pos.x;
-        double spriteY = sprite[state.spriteOrder[i]].y - state.pos.y;
+    // //after sorting the sprites, do the projection and draw them
+    // for(int i = 0; i < SPRITE_AMOUNT; i++) {
+    //     //translate sprite position to relative to camera
+    //     double spriteX = sprite[state.spriteOrder[i]].x - state.pos.x;
+    //     double spriteY = sprite[state.spriteOrder[i]].y - state.pos.y;
 
-        //transform sprite with the inverse camera matrix
-        // [ planeX   dirX ] -1                                       [ dirY      -dirX ]
-        // [               ]       =  1/(planeX*dirY-dirX*planeY) *   [                 ]
-        // [ planeY   dirY ]                                          [ -planeY  planeX ]
+    //     //transform sprite with the inverse camera matrix
+    //     // [ planeX   dirX ] -1                                       [ dirY      -dirX ]
+    //     // [               ]       =  1/(planeX*dirY-dirX*planeY) *   [                 ]
+    //     // [ planeY   dirY ]                                          [ -planeY  planeX ]
 
-        double invDet = 1.0 / (state.plane.x * state.dir.y - state.dir.x * state.plane.y); //required for correct matrix multiplication
+    //     double invDet = 1.0 / (state.plane.x * state.dir.y - state.dir.x * state.plane.y); //required for correct matrix multiplication
 
-        double transformX = invDet * (state.dir.y * spriteX - state.dir.x * spriteY);
-        double transformY = invDet * (-state.plane.y * spriteX + state.plane.x * spriteY); //this is actually the depth inside the screen, that what Z is in 3D, the distance of sprite to player, matching sqrt(spriteDistance[i])
+    //     double transformX = invDet * (state.dir.y * spriteX - state.dir.x * spriteY);
+    //     double transformY = invDet * (-state.plane.y * spriteX + state.plane.x * spriteY); //this is actually the depth inside the screen, that what Z is in 3D, the distance of sprite to player, matching sqrt(spriteDistance[i])
 
-        int spriteScreenX = int((WINDOW_WIDTH / 2) * (1 + transformX / transformY));
+    //     int spriteScreenX = int((WINDOW_WIDTH / 2) * (1 + transformX / transformY));
 
-        //parameters for scaling and moving the sprites
-        #define uDiv 1
-        #define vDiv 1
-        #define vMove 0.0
-        int vMoveScreen = int(vMove / transformY);
+    //     //parameters for scaling and moving the sprites
+    //     #define uDiv 1
+    //     #define vDiv 1
+    //     #define vMove 0.0
+    //     int vMoveScreen = int(vMove / transformY);
 
-        //calculate height of the sprite on screen
-        int spriteHeight = abs(int(WINDOW_HEIGHT / (transformY))) / vDiv; //using "transformY" instead of the real distance prevents fisheye
-        //calculate lowest and highest pixel to fill in current stripe
-        int drawStartY = -spriteHeight / 2 + WINDOW_HEIGHT / 2 + vMoveScreen;
-        if(drawStartY < 0) drawStartY = 0;
-        int drawEndY = spriteHeight / 2 + WINDOW_HEIGHT / 2 + vMoveScreen;
-        if(drawEndY >= WINDOW_HEIGHT) drawEndY = WINDOW_HEIGHT - 1;
+    //     //calculate height of the sprite on screen
+    //     int spriteHeight = abs(int(WINDOW_HEIGHT / (transformY))) / vDiv; //using "transformY" instead of the real distance prevents fisheye
+    //     //calculate lowest and highest pixel to fill in current stripe
+    //     int drawStartY = -spriteHeight / 2 + WINDOW_HEIGHT / 2 + vMoveScreen;
+    //     if(drawStartY < 0) drawStartY = 0;
+    //     int drawEndY = spriteHeight / 2 + WINDOW_HEIGHT / 2 + vMoveScreen;
+    //     if(drawEndY >= WINDOW_HEIGHT) drawEndY = WINDOW_HEIGHT - 1;
 
-        //calculate width of the sprite
-        int spriteWidth = abs(int (WINDOW_HEIGHT / (transformY))) / uDiv; // same as height of sprite, given that it's square
-        int drawStartX = -spriteWidth / 2 + spriteScreenX;
-        if(drawStartX < 0) drawStartX = 0;
-        int drawEndX = spriteWidth / 2 + spriteScreenX;
-        if(drawEndX > WINDOW_WIDTH) drawEndX = WINDOW_WIDTH;
+    //     //calculate width of the sprite
+    //     int spriteWidth = abs(int (WINDOW_HEIGHT / (transformY))) / uDiv; // same as height of sprite, given that it's square
+    //     int drawStartX = -spriteWidth / 2 + spriteScreenX;
+    //     if(drawStartX < 0) drawStartX = 0;
+    //     int drawEndX = spriteWidth / 2 + spriteScreenX;
+    //     if(drawEndX > WINDOW_WIDTH) drawEndX = WINDOW_WIDTH;
 
-        //loop through every vertical stripe of the sprite on screen
-        for(int stripe = drawStartX; stripe < drawEndX; stripe++) {
-            int texX = int(256 * (stripe - (-spriteWidth / 2 + spriteScreenX)) * TEXTURE_WIDTH / spriteWidth) / 256;
-            //the conditions in the if are:
-            //1) it's in front of camera plane so you don't see things behind you
-            //2) ZBuffer, with perpendicular distance
-            if(transformY > 0 && transformY < state.ZBuffer[stripe]) {
-                for(int y = drawStartY; y < drawEndY; y++) //for every pixel of the current stripe
-                {
-                    int d = (y - vMoveScreen) * 256 - WINDOW_HEIGHT * 128 + spriteHeight * 128; //256 and 128 factors to avoid floats
-                    int texY = ((d * TEXTURE_HEIGHT) / spriteHeight) / 256;
-                    Uint32 color = getpixel(textures[sprite[state.spriteOrder[i]].texture], texX, texY); //get current color from the texture
-                    if((color & 0x00FFFFFF) != 0) state.pixels[(y*WINDOW_WIDTH)+stripe] = color; //paint pixel if it isn't black, black is the invisible color
-                }
-            }
-        }
-    }
+    //     //loop through every vertical stripe of the sprite on screen
+    //     for(int stripe = drawStartX; stripe < drawEndX; stripe++) {
+    //         int texX = int(256 * (stripe - (-spriteWidth / 2 + spriteScreenX)) * TEXTURE_WIDTH / spriteWidth) / 256;
+    //         //the conditions in the if are:
+    //         //1) it's in front of camera plane so you don't see things behind you
+    //         //2) ZBuffer, with perpendicular distance
+    //         if(transformY > 0 && transformY < state.ZBuffer[stripe]) {
+    //             for(int y = drawStartY; y < drawEndY; y++) //for every pixel of the current stripe
+    //             {
+    //                 int d = (y - vMoveScreen) * 256 - WINDOW_HEIGHT * 128 + spriteHeight * 128; //256 and 128 factors to avoid floats
+    //                 int texY = ((d * TEXTURE_HEIGHT) / spriteHeight) / 256;
+    //                 Uint32 color = getpixel(textures[sprite[state.spriteOrder[i]].texture], texX, texY); //get current color from the texture
+    //                 if((color & 0x00FFFFFF) != 0) state.pixels[(y*WINDOW_WIDTH)+stripe] = color; //paint pixel if it isn't black, black is the invisible color
+    //             }
+    //         }
+    //     }
+    // }
 }
 
 #endif
