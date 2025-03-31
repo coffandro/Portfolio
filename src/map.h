@@ -10,13 +10,13 @@ static u8 MAPDATA[MAP_SIZE * MAP_SIZE] = {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-    0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0,
-    0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
-    1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
-    1, 0, 0, 0, 0, 0, 2, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
-    1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
-    0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
-    0, 0, 0, 1, 1, 1, 1, 1, 1, 3, 1, 4, 1, 1, 1, 1, 0, 0, 0,
+    0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 0, 0, 0, 0, 0, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+    0, 0, 0, 1, 1, 1, 1, 1, 1, 3, 1, 4, 1, 5, 1, 1, 1, 1, 1,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -31,12 +31,9 @@ struct Sprite {
     int texture;
 };
 
-#define SPRITE_AMOUNT 1
+#define SPRITE_AMOUNT 0
 
-Sprite sprite[SPRITE_AMOUNT] =
-{
-    {7, 15, 4}
-};
+Sprite sprite[SPRITE_AMOUNT] = {};
 
 //function used to sort the sprites
 void sortSprites(int* order, double* dist, int amount);
@@ -45,11 +42,11 @@ void sortSprites(int* order, double* dist, int amount);
 #define TEXTURE_WIDTH 320
 #define TEXTURE_HEIGHT 320
 static std::string texture_paths[TEXTURE_AMOUNT] = {
-    "cache_assets/Brick.png", // 0
-    "cache_assets/Guide.png", // 1
-    "cache_assets/FalloutLondonLogo.png", // 2
-    "cache_assets/GameOn.png", // 3
+    "cache_assets/Brick.png", // 1
+    "cache_assets/Guide.png", // 2
+    "cache_assets/FalloutLondonLogo.png", // 3
     "cache_assets/GameOn.png", // 4
+    "cache_assets/FightForForrestLogo.png", // 5
 };
 static SDL_Surface* textures[TEXTURE_AMOUNT];
 
@@ -66,6 +63,7 @@ static const char* links[TEXTURE_AMOUNT] = {
     NULL, // 1
     "https://fallout4london.com/", // 2
     "https://on-undervisning.dk/materialer/din-data", // 3
+    "https://coffandro.itch.io/fightforforest", // 4
 };
 
 #endif

@@ -107,11 +107,7 @@ void process_input() {
     }
 
     if (keystate[SDL_SCANCODE_PAGEDOWN]) {
-        state.pitch -= 1;
-    }
-
-    if (keystate[SDL_SCANCODE_PAGEUP]) {
-        state.pitch += 1;
+        std::cout << state.pos.x << " " << state.pos.y << "\n";
     }
 }
 
