@@ -21,7 +21,8 @@ struct {
 
     std::string last_link;
 
-    int old_mouse_x, mouse_x;
+    int old_mouse_x, mouse_x, old_mouse_y, mouse_y;
+    int pitch = 10;
     
     // three vectors to keep track of the position, direction
     // and something I am yet to understand.

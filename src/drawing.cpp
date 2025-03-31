@@ -111,14 +111,12 @@ void draw()
             }
         }
 
-        int pitch = 10;
-
         // perform perspective division, calculate line height relative to
         // screen center
         int
             h = (int) (WINDOW_HEIGHT / state.perpWallDist),
-            y0 = max((WINDOW_HEIGHT / 2) - (h / 2) + (pitch), 0),
-            y1 = min((WINDOW_HEIGHT / 2) + (h / 2) + (pitch), WINDOW_HEIGHT - 1);
+            y0 = max((WINDOW_HEIGHT / 2) - (h / 2) + (state.pitch), 0),
+            y1 = min((WINDOW_HEIGHT / 2) + (h / 2) + (state.pitch), WINDOW_HEIGHT - 1);
 
         //calculate value of wallX
         double wallX; //where exactly the wall was hit
@@ -133,7 +131,7 @@ void draw()
         // How much to increase the texture coordinate per screen pixel
         double texStep = 1.0 * TEXTURE_HEIGHT / h;
         // Starting texture coordinate
-        double texPos = (y0 - pitch - WINDOW_HEIGHT / 2 + h / 2) * texStep;
+        double texPos = (y0 - state.pitch - WINDOW_HEIGHT / 2 + h / 2) * texStep;
         for (int y = y0; y <= y1; y++) {
             // Cast the texture coordinate to integer, and mask with (texHeight - 1) in case of overflow
             int texY = (int)texPos;

@@ -21,8 +21,8 @@ typedef size_t   usize;
 typedef ssize_t  isize;
 
 // Define window dimensions
-#define WINDOW_WIDTH 320
-#define WINDOW_HEIGHT 200
+#define WINDOW_WIDTH 480
+#define WINDOW_HEIGHT 300
 #define WINDOW_SCALE 1
 
 // Define vector 2 with float and int
