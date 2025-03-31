@@ -70,5 +70,21 @@ void init()
             SDL_LockSurface(textures[i]);
         }
     }
+
+    if (floor_path != ""){ 
+        floor_texture = IMG_Load(floor_path.c_str());
+        ASSERT(
+            floor_texture, 
+            "failed to create SDL surface: %s\n", IMG_GetError());
+        SDL_LockSurface(floor_texture);
+    }
+
+    if (ceiling_path != ""){ 
+        ceiling_texture = IMG_Load(ceiling_path.c_str());
+        ASSERT(
+            ceiling_texture, 
+            "failed to create SDL surface: %s\n", IMG_GetError());
+        SDL_LockSurface(ceiling_texture);
+    }
 }
 #endif

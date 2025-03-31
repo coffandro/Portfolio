@@ -1,5 +1,6 @@
 #ifndef STATE_H
 #define STATE_H
+#include "map.h"
 #include <string>
 
 // The struct containing most of the games actually... 
@@ -12,6 +13,13 @@ struct {
 
     // a buffer to contain the pixels to draw on screen
     u32 pixels[WINDOW_WIDTH * WINDOW_HEIGHT];
+    //1D Zbuffer
+    double ZBuffer[WINDOW_WIDTH];
+
+    //arrays used to sort the sprites
+    int spriteOrder[SPRITE_AMOUNT];
+    double spriteDistance[SPRITE_AMOUNT];
+
     // a bool to keep track of whether to run the mainloop or not
     bool quit;
     bool active = false;
