@@ -19,9 +19,7 @@ struct {
     f32 perpWallDist;
     hit_point current_target;
 
-    std::string last_link;
-
-    int old_mouse_x, mouse_x, old_mouse_y, mouse_y;
+    int old_mouse_x, mouse_x;
     int pitch = 10;
     
     // three vectors to keep track of the position, direction

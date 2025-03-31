@@ -55,12 +55,11 @@ void process_input() {
         movespeed = 3.0f * 0.016f;
 
     const u8 *keystate = SDL_GetKeyboardState(NULL);
-    const u32 clicked = SDL_GetMouseState(&state.mouse_x, &state.mouse_y);
+    const u32 clicked = SDL_GetMouseState(&state.mouse_x, NULL);
 
     if (clicked == 1) {
         const char* link = links[state.current_target.val - 1];
-        if (link != state.last_link && link != NULL) {
-            state.last_link = link;
+        if (link != NULL) {
             open_embed(link);
         }
     }
@@ -70,15 +69,7 @@ void process_input() {
         rotate(diff * rotspeed);
         state.mouse_x = WINDOW_WIDTH/2;
         state.old_mouse_x = state.mouse_x;
-        SDL_WarpMouseInWindow(state.window, state.mouse_x, state.mouse_y);
-    }
-
-    if (state.old_mouse_y != state.mouse_y) {
-        int diff = std::clamp((state.mouse_y-state.old_mouse_y)/2, -1, 1);
-        state.pitch += diff * 5;
-        state.mouse_y = WINDOW_WIDTH/2;
-        state.old_mouse_y = state.mouse_y;
-        SDL_WarpMouseInWindow(state.window, state.mouse_x, state.mouse_y);
+        SDL_WarpMouseInWindow(state.window, state.mouse_x, NULL);
     }
 
     if (keystate[SDL_SCANCODE_Q]) {
