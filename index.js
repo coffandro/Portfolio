@@ -31,7 +31,7 @@ if (ENVIRONMENT_IS_NODE) {
 
 // --pre-jses are emitted after the Module integration code, so that they can
 // refer to Module (if they choose; they can also define Module)
-// include: /tmp/tmpjpwtussn.js
+// include: /tmp/tmpzaxy1p59.js
 
   Module['expectedDataFileDownloads'] ??= 0;
   Module['expectedDataFileDownloads']++;
@@ -211,25 +211,25 @@ Module['FS_createPath']("/", "cache_assets", true, true);
     }
 
     }
-    loadPackage({"files": [{"filename": "/cache_assets/Brick.png", "start": 0, "end": 82408}, {"filename": "/cache_assets/Ceiling.png", "start": 82408, "end": 117488}, {"filename": "/cache_assets/CursorClick.png", "start": 117488, "end": 133047}, {"filename": "/cache_assets/CursorDefault.png", "start": 133047, "end": 151836}, {"filename": "/cache_assets/CursorHover.png", "start": 151836, "end": 167038}, {"filename": "/cache_assets/FalloutLondonLogo.png", "start": 167038, "end": 317851}, {"filename": "/cache_assets/FightForForrestLogo.png", "start": 317851, "end": 368095}, {"filename": "/cache_assets/FishiesLogo.png", "start": 368095, "end": 457661}, {"filename": "/cache_assets/Floor.png", "start": 457661, "end": 605251}, {"filename": "/cache_assets/GameOn.png", "start": 605251, "end": 655589}, {"filename": "/cache_assets/Guide.png", "start": 655589, "end": 698678}, {"filename": "/cache_assets/RoundSnakeLogo.png", "start": 698678, "end": 728617}, {"filename": "/cache_assets/SPCLogo.png", "start": 728617, "end": 775281}, {"filename": "/cache_assets/UrLogo.png", "start": 775281, "end": 850502}, {"filename": "/cache_assets/WhackACapitalistLogo.png", "start": 850502, "end": 902338}, {"filename": "/cache_assets/tile_0137.png", "start": 902338, "end": 918822}, {"filename": "/cache_assets/tile_0138.png", "start": 918822, "end": 936191}, {"filename": "/cache_assets/tile_0139.png", "start": 936191, "end": 949920}], "remote_package_size": 949920});
+    loadPackage({"files": [{"filename": "/cache_assets/Brick.png", "start": 0, "end": 82408}, {"filename": "/cache_assets/Ceiling.png", "start": 82408, "end": 117488}, {"filename": "/cache_assets/CursorClick.png", "start": 117488, "end": 121105}, {"filename": "/cache_assets/CursorDefault.png", "start": 121105, "end": 125153}, {"filename": "/cache_assets/CursorHover.png", "start": 125153, "end": 128612}, {"filename": "/cache_assets/FalloutLondonLogo.png", "start": 128612, "end": 279425}, {"filename": "/cache_assets/FightForForrestLogo.png", "start": 279425, "end": 329669}, {"filename": "/cache_assets/FishiesLogo.png", "start": 329669, "end": 419235}, {"filename": "/cache_assets/Floor.png", "start": 419235, "end": 566825}, {"filename": "/cache_assets/GameOn.png", "start": 566825, "end": 617163}, {"filename": "/cache_assets/Guide.png", "start": 617163, "end": 660252}, {"filename": "/cache_assets/RoundSnakeLogo.png", "start": 660252, "end": 690191}, {"filename": "/cache_assets/SPCLogo.png", "start": 690191, "end": 736855}, {"filename": "/cache_assets/UrLogo.png", "start": 736855, "end": 812076}, {"filename": "/cache_assets/WhackACapitalistLogo.png", "start": 812076, "end": 863912}, {"filename": "/cache_assets/tile_0137.png", "start": 863912, "end": 880396}, {"filename": "/cache_assets/tile_0138.png", "start": 880396, "end": 897765}, {"filename": "/cache_assets/tile_0139.png", "start": 897765, "end": 911494}], "remote_package_size": 911494});
 
   })();
 
-// end include: /tmp/tmpjpwtussn.js
-// include: /tmp/tmpi_blwvqi.js
+// end include: /tmp/tmpzaxy1p59.js
+// include: /tmp/tmpvf1g2iuj.js
 
     // All the pre-js content up to here must remain later on, we need to run
     // it.
     if (Module['$ww'] || (typeof ENVIRONMENT_IS_PTHREAD != 'undefined' && ENVIRONMENT_IS_PTHREAD)) Module['preRun'] = [];
     var necessaryPreJSTasks = Module['preRun'].slice();
-  // end include: /tmp/tmpi_blwvqi.js
-// include: /tmp/tmp9kjtqew5.js
+  // end include: /tmp/tmpvf1g2iuj.js
+// include: /tmp/tmpghtzmkc9.js
 
     if (!Module['preRun']) throw 'Module.preRun should exist because file support used it; did a pre-js delete it?';
     necessaryPreJSTasks.forEach((task) => {
       if (Module['preRun'].indexOf(task) < 0) throw 'All preRun tasks that exist before user pre-js code should remain after; did you replace Module or modify Module.preRun?';
     });
-  // end include: /tmp/tmp9kjtqew5.js
+  // end include: /tmp/tmpghtzmkc9.js
 
 
 // Sometimes an existing Module object exists with properties
