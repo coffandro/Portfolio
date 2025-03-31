@@ -9,13 +9,13 @@ typedef void(*functionPtr)(void);
 
 // No name mangling
 extern "C" {
-    static functionPtr close_function = nullptr;
-
     // Functions JS can run on app
-    void close_embed() {
-        if (close_function != nullptr) {
-            close_function();
-        }
+    void pointer_unlocked() {
+        state.active = false;
+    }
+
+    void pointer_locked() {
+        state.active = true;
     }
 
 }

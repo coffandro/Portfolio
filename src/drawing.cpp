@@ -150,30 +150,27 @@ void draw()
         }
 
         // distance to hit
-        state.perpWallDist =
+        f32 perpWallDist =
             hit.side == 0 ?
                 (sidedist.x - deltadist.x)
                 : (sidedist.y - deltadist.y);
         
-        if (x == WINDOW_WIDTH/2) {
-            if (state.perpWallDist < 10) {
-                state.current_target = hit;
-            } else {
-                state.current_target = { 0, 0, { 0.0f, 0.0f } };
-            }
+        if (x == WINDOW_WIDTH / 2) {
+            state.current_target = hit;
+            state.perpWallDist = perpWallDist;
         }
 
         // perform perspective division, calculate line height relative to
         // screen center
         int
-            h = (int) (WINDOW_HEIGHT / state.perpWallDist),
+            h = (int) (WINDOW_HEIGHT / perpWallDist),
             y0 = max((WINDOW_HEIGHT / 2) - (h / 2) + (state.pitch), 0),
             y1 = min((WINDOW_HEIGHT / 2) + (h / 2) + (state.pitch), WINDOW_HEIGHT - 1);
 
         //calculate value of wallX
         double wallX; //where exactly the wall was hit
-        if (hit.side == 0) wallX = state.pos.y + state.perpWallDist * dir.y;
-        else           wallX = state.pos.x + state.perpWallDist * dir.x;
+        if (hit.side == 0) wallX = state.pos.y + perpWallDist * dir.y;
+        else           wallX = state.pos.x + perpWallDist * dir.x;
         wallX -= floor((wallX));
         //x coordinate on the texture
         int texX = int(wallX * double(TEXTURE_WIDTH));

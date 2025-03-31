@@ -68,9 +68,10 @@ void process_input() {
     SDL_Event e;
     while(SDL_PollEvent(&e)){
         if (e.type == SDL_MOUSEBUTTONDOWN){
-            if(e.button.button == SDL_BUTTON_LEFT){
-                const char* link = links[state.current_target.val - 1];
+            if(e.button.button == SDL_BUTTON_LEFT && state.perpWallDist < 2.5) {
+                const char* link = links[state.current_target.val];
                 if (link != NULL) {
+                    state.active = false;
                     open_embed(link);
                 }
             }

@@ -60,15 +60,9 @@ void main_loop() {
     SDL_RenderPresent(state.renderer);
 }
 
-void test_close_function() {
-    state.active = true;
-}
-
 int main() {
     setupSDL();
     init();
-    close_function = test_close_function;
-    close_function();
 
     #ifdef __EMSCRIPTEN__
         emscripten_set_main_loop(main_loop, 60, true);

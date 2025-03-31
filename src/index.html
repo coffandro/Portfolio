@@ -27,31 +27,48 @@
         </style>
         <canvas id="canvas"></canvas>
         <script type='text/javascript'>
-            var close_embed = null;
-            var current_link = "";
+            var pointer_unlocked = null;
+            var pointer_locked = null;
+
             var Module = {
                 canvas: (function() { return document.getElementById('canvas'); })()
             };
-            Module.canvas.addEventListener("click", async () => {
-                await Module.canvas.requestPointerLock();
-            });
-            document.addEventListener("DOMContentLoaded", function() {
-                Module.canvas.requestPointerLock();
-                if (close_embed != null) {
-                    close_embed();
+            document.addEventListener("pointerlockchange", lockChangeAlert, false);
+
+            function lockChangeAlert() {
+                if (document.pointerLockElement === Module.canvas) {
+                    if (pointer_locked != null) {
+                        pointer_locked();
+                    }
+                } else {
+                    if (pointer_unlocked != null) {
+                        pointer_unlocked();
+                    }
                 }
-            });
+            }
+
             function open_link(link) {
                 window.open(UTF8ToString(link));
             }
 
-            Module['onRuntimeInitialized'] = function() {
+            Module['onRuntimeInitialized'] = async () => {
                 console.log("wasm loaded ");
-                close_embed = Module.cwrap('close_embed', 'void', ['void'])
-                if (close_embed != null) {
-                    close_embed();
+                pointer_unlocked = Module.cwrap('pointer_unlocked', 'void', ['void'])
+                pointer_locked = Module.cwrap('pointer_locked', 'void', ['void'])
+                if (pointer_unlocked != null) {
+                    pointer_unlocked();
                 }
+
+                await Module.canvas.requestPointerLock({
+                    unadjustedMovement: true,
+                });
             }
+
+            Module.canvas.addEventListener("click", async () => {
+                await Module.canvas.requestPointerLock({
+                    unadjustedMovement: true,
+                });
+            });
 
         </script>
         <script src="index.js"></script>
