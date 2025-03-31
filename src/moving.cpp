@@ -55,14 +55,7 @@ void process_input() {
         movespeed = 3.0f * 0.016f;
 
     const u8 *keystate = SDL_GetKeyboardState(NULL);
-    const u32 clicked = SDL_GetMouseState(&state.mouse_x, NULL);
-
-    if (clicked == 1) {
-        const char* link = links[state.current_target.val - 1];
-        if (link != NULL) {
-            open_embed(link);
-        }
-    }
+    SDL_GetMouseState(&state.mouse_x, NULL);
 
     if (state.old_mouse_x != state.mouse_x) {
         int diff = std::clamp((state.mouse_x-state.old_mouse_x)/2, -1, 1);
@@ -71,6 +64,19 @@ void process_input() {
         state.old_mouse_x = state.mouse_x;
         SDL_WarpMouseInWindow(state.window, state.mouse_x, NULL);
     }
+
+    SDL_Event e;
+    while(SDL_PollEvent(&e)){
+        if (e.type == SDL_MOUSEBUTTONDOWN){
+            if(e.button.button == SDL_BUTTON_LEFT){
+                const char* link = links[state.current_target.val - 1];
+                if (link != NULL) {
+                    open_embed(link);
+                }
+            }
+        }
+    }
+
 
     if (keystate[SDL_SCANCODE_Q]) {
         rotate(-rotspeed);
