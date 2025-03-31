@@ -28,7 +28,7 @@ struct {
     hit_point current_target;
 
     int old_mouse_x, mouse_x;
-    int pitch = 10;
+    int pitch = 0;
     
     // three vectors to keep track of the position, direction
     // and something I am yet to understand.

@@ -94,13 +94,11 @@ void draw()
 
         // floor
         color = getpixel(floor_texture, ty, tx);
-        color = (color >> 1) & 8355711; // make a bit darker
-        state.pixels[(y * WINDOW_WIDTH) + x] = color;
+        state.pixels[((WINDOW_HEIGHT-y-1) * WINDOW_WIDTH) + x] = color;
 
         //ceiling (symmetrical, at screenHeight - y - 1 instead of y)
         color = getpixel(ceiling_texture, ty, tx);
-        color = (color >> 1) & 8355711; // make a bit darker
-        state.pixels[((WINDOW_HEIGHT-y-1) * WINDOW_WIDTH) + x] = color;
+        state.pixels[(y * WINDOW_WIDTH) + x] = color;
       }
     }
 
@@ -207,10 +205,10 @@ void draw()
             state.pixels[(y * WINDOW_WIDTH) + x] = color;
         }
 
-        // bottom of screen
-        verline(x, 0, y0, 0x808080);
-        // top of screen
-        verline(x, y1, WINDOW_HEIGHT - 1, 0xA9A9A9);
+        // // bottom of screen
+        // verline(x, 0, y0, 0x808080);
+        // // top of screen
+        // verline(x, y1, WINDOW_HEIGHT - 1, 0xA9A9A9);
     }
 }
 
