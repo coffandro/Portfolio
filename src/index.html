@@ -126,6 +126,30 @@
                 window.open(UTF8ToString(link));
             }
 
+            // var allowed_keys = ["W", "w", "A", "a", "S", "s", "D", "d",]
+
+            // /* code to prevent emscripten compiled code from eating key input */
+            // window.addEventListener('keydown', function(event){
+            //     if (Module == null) return;
+            //     allowed_keys.forEach((key) => {
+            //         if (event.key == key) {
+            //             return;
+            //         }
+            //     });
+            //     console.log(event.key);
+            //     event.stopImmediatePropagation();
+            // }, true);
+
+            // window.addEventListener('keyup', function(event){
+            //     if (Module == null) return;
+            //     allowed_keys.forEach((key) => {
+            //         if (event.key == key) {
+            //             return;
+            //         }
+            //     });
+            //     event.stopImmediatePropagation();
+            // }, true);
+
             function load_game() {
                 Module = {
                     canvas: (function() { return document.getElementById('canvas'); })()

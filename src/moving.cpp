@@ -76,7 +76,7 @@ void process_input() {
         state.cursor_index = 2;
     } else {
         state.cursor_index = 0;
-    }    
+    }
 
     SDL_Event e;
     while(SDL_PollEvent(&e)){
@@ -95,26 +95,21 @@ void process_input() {
     if (keystate[SDL_SCANCODE_Q]) {
         rotate(-rotspeed);
     }
-
     if (keystate[SDL_SCANCODE_E]) {
         rotate(rotspeed);
     }
-
     if (keystate[SDL_SCANCODE_W] || keystate[SDL_SCANCODE_UP]) {
         move(state.dir.x * movespeed,
             state.dir.y * movespeed);
     }
-
     if (keystate[SDL_SCANCODE_S] || keystate[SDL_SCANCODE_DOWN]) {
         move(state.dir.x * -movespeed,
             state.dir.y * -movespeed);
     }
-
     if (keystate[SDL_SCANCODE_A] || keystate[SDL_SCANCODE_LEFT]) {
         move((state.dir.x * cos(-1.5f) - state.dir.y * sin(-1.5f)) * movespeed,
             (state.dir.x * sin(-1.5f) + state.dir.y * cos(-1.5f)) * movespeed);
     }
-
     if (keystate[SDL_SCANCODE_D] || keystate[SDL_SCANCODE_RIGHT]) {
         move((state.dir.x * cos(1.5f) - state.dir.y * sin(1.5f)) * movespeed,
             (state.dir.x * sin(1.5f) + state.dir.y * cos(1.5f)) * movespeed);
