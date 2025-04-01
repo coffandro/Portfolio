@@ -199,7 +199,6 @@
 
             addEventListener("DOMContentLoaded", function() {
                 if (window.mobileAndTabletCheck()) {
-                    landing_button.classList.add("hidden");
                     document.body.classList.add("mobile");
                 }
             });
@@ -251,8 +250,12 @@
             }
 
             landing_button.addEventListener("click", function() {
-                landing_container.classList.add("close");
-                load_game();
+                if (!window.mobileAndTabletCheck()) {
+                    landing_container.classList.add("close");
+                    load_game();
+                } else {
+                    alert("This is only supported on PC due to requiring keyboard controls.");
+                }
             });
         </script>
     </body>
