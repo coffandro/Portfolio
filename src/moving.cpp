@@ -58,7 +58,12 @@ void process_input() {
     const u32 clicked = SDL_GetMouseState(&state.mouse_x, NULL);
 
     if (state.old_mouse_x != state.mouse_x) {
-        int diff = std::clamp((state.mouse_x-state.old_mouse_x)/2, -1, 1);
+        int diff = (state.mouse_x-state.old_mouse_x);
+        if (diff > 0) {
+            diff = diff/diff;
+        } else {
+            diff = -diff/diff;
+        }
         rotate(diff * rotspeed);
         state.mouse_x = WINDOW_WIDTH/2;
         state.old_mouse_x = state.mouse_x;
