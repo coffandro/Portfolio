@@ -6,9 +6,10 @@
     </head>
     <body>
         <style>
-            body {
+            html, body {
                 overflow: hidden;
-                height: 100vh;
+                height: 100%;
+                margin: 0;
                 perspective: 1000px;
             }
 
@@ -53,6 +54,9 @@
                 border-radius: 50px 50px 0 0;
                 border-bottom: 0;
             }
+            .mobile #landingButton {
+                font-size: 4em;
+            }
 
             #landing {
                 position: absolute;
@@ -66,18 +70,14 @@
                 width: 90%;
                 height: 92vh;
                 display: block;
+                padding-bottom: 100px;
             }
 
             .mobile #landing {
-                left: 50%; top: 75px;
-                transform: translate(-50%, 0);
+                width: 100vw;
+                overflow-y: scroll;
                 height: 90%;
-            }
-
-            @keyframes pictureSwing {
-                0% {transform: rotate(2.5deg);}
-                50% {transform: rotate(-0.5deg);}
-                100% {transform: rotate(2.5deg);}
+                padding-bottom: 20px;
             }
 
             .landingPin::before {
@@ -89,37 +89,61 @@
                 transform: translate(-50%, 0);
             }
 
+            .mobile .landingPin::before {
+                font-size: 40px;
+            }
+
             #landingPicture {
                 background: white;
                 padding: 20px;
                 transform-origin: top center;
-                animation: pictureSwing 5s infinite ease-in-out;
+                transform: rotate(1deg);
                 position: absolute;
-                top: 40px;
-                left: 60px;
+                top: 4vh;
+                left: 4vw;
+            }
+
+            .mobile #landingPicture {
+                top: 2vh;
+            }
+
+            .mobile #landingPicture img {
+                width: 85vw;
             }
 
             #landingSubtitles {
                 background: white;
                 padding: 20px;
                 transform-origin: top center;
-                animation: pictureSwing 5s infinite ease-in-out;
-                animation-delay: 0.25;
+                transform: rotate(-1.5deg);
                 position: absolute;
-                top: 700px;
-                left: 65px;
+                top: 70vh;
+                left: 5vw;
+            }
+
+            .mobile #landingSubtitles {
+                font-size: 2.25em;
+                top: 61vh;
             }
 
             #landingBody {
                 background: white;
                 padding: 15px;
                 transform-origin: top center;
-                animation: pictureSwing 5s infinite ease-in-out;
-                animation-delay: 0.5;
-                animation-direction: reverse;
+                transform: rotate(0.25deg);
                 position: absolute;
-                top: 15px;
-                right: 60px;
+                top: 2vh;
+                right: 4vw;
+            }
+
+            .mobile #landingBody {
+                font-size: 2em;
+                top: 75vh;
+                left: 5vw;
+            }
+
+            .mobile #landingBody h1 {
+                font-size: 1.75em;
             }
 
             .hidden {
@@ -135,6 +159,14 @@
                 <div id="landingPicture">
                     <span class="landingPin"></span>
                     <img src="img/Cornelius.png">
+                </div>
+                <div id="landingSubtitles">
+                    <span class="landingPin"></span>
+                    <h3>Profile</h3>
+                    I'm a passionated student
+                    with a love for Linux, <br>
+                    game development, 
+                    and generally nerdy things.
                 </div>
                 <div id="landingBody">
                     <span class="landingPin"></span>
@@ -173,14 +205,6 @@
                     to build "The Fallout: London - Fallout 4 Downgrader". During this task, <br> 
                     I learned how to both work closely with testers and customers to develop <br> 
                     software and optimize our products' distribution.</p>
-                </div>
-                <div id="landingSubtitles">
-                    <span class="landingPin"></span>
-                    <h3>Profile</h3>
-                    I'm a passionated student
-                    with a love for Linux, <br>
-                    game development, 
-                    and generally nerdy things.
                 </div>
             </div>
         </div>
