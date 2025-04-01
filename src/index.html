@@ -13,7 +13,7 @@
             }
 
             #canvas {
-                height: 100%;                                                                                                                                                                         
+                height: 100%;
                 overflow: hidden;
                 display: block;
                 position: absolute;
@@ -43,9 +43,20 @@
                 animation: closeLanding 2s forwards;
             }
 
+            #landingButton {
+                position: absolute;
+                left: 50%; top: 1vh;
+                transform: translate(-50%, 0);
+                background-color: white;
+                border: 20px solid black;
+                padding: 10px 35px;
+                border-radius: 50px 50px 0 0;
+                border-bottom: 0;
+            }
+
             #landing {
                 position: absolute;
-                left: 50%; bottom: 0;
+                left: 50%; top: 6vh;
                 transform: translate(-50%, 0);
                 z-index: 2;
                 background-color: #f0c7ab;
@@ -53,24 +64,62 @@
                 border-bottom: 0;
                 border-radius: 50px 50px 0 0;
                 width: 90%;
-                height: 90%;
+                height: 92vh;
+                display: block;
             }
 
             .mobile #landing {
-                left: 50%; bottom: 50%;
-                transform: translate(-50%, -50%);
+                left: 50%; top: 75px;
+                transform: translate(-50%, 0);
                 height: 90%;
             }
 
-            #landingButton {
+            @keyframes pictureSwing {
+                0% {transform: rotate(2.5deg);}
+                50% {transform: rotate(-0.5deg);}
+                100% {transform: rotate(2.5deg);}
+            }
+
+            .landingPin::before {
+                content: ' \25CF';
+                font-size: 20px;
                 position: absolute;
-                left: 50%; top: -95px;
+                left: 50%;
+                top: 5px;
                 transform: translate(-50%, 0);
-                background-color: white;
-                border: 20px solid black;
-                padding: 20px 30px;
-                border-radius: 50px 50px 0 0;
-                border-bottom: 0;
+            }
+
+            #landingPicture {
+                background: white;
+                padding: 20px;
+                transform-origin: top center;
+                animation: pictureSwing 5s infinite ease-in-out;
+                position: absolute;
+                top: 40px;
+                left: 60px;
+            }
+
+            #landingSubtitles {
+                background: white;
+                padding: 20px;
+                transform-origin: top center;
+                animation: pictureSwing 5s infinite ease-in-out;
+                animation-delay: 0.25;
+                position: absolute;
+                top: 700px;
+                left: 65px;
+            }
+
+            #landingBody {
+                background: white;
+                padding: 15px;
+                transform-origin: top center;
+                animation: pictureSwing 5s infinite ease-in-out;
+                animation-delay: 0.5;
+                animation-direction: reverse;
+                position: absolute;
+                top: 15px;
+                right: 60px;
             }
 
             .hidden {
@@ -81,9 +130,58 @@
         </style>
         <canvas id="canvas" ></canvas>
         <div id="landingContainer">
+            <button id="landingButton">Games</button>
             <div id="landing">
-                <button id="landingButton">Bored? click here!</button>
-
+                <div id="landingPicture">
+                    <span class="landingPin"></span>
+                    <img src="img/Cornelius.png">
+                </div>
+                <div id="landingBody">
+                    <span class="landingPin"></span>
+                    <h1>Cornelius Andreas Rosenaa</h1>
+                    <h4>Game Design Student</h4>
+                    <hr>
+                    <h2>Experience</h2>
+                    <p><b>Meny</b>, Domus Vista - Delicacy<br>
+                    November 2021 - November 2024<br>
+                    I worked in Meny Domus Vista's deli for 3 years, where I worked with <br> 
+                    customer service, sanitation in connection with food, cleaning and sales.</p>
+                    <p><b>Greenmind</b>, Vesterbrogade - Internship<br>
+                    January 2024 - February 2024<br>
+                    I had an internship in Greenmind Vesterbrogade where I performed <br> 
+                    customer service, device testing and repair of electronics.</p>
+                    <p><b>Team FOLON</b> - Community moderator<br>
+                    November 2022 - July 2024<br>
+                    I was a community moderator for Team FOLON for about 2 years, <br> 
+                    in this role, I handled hard social situations as well as formulating <br> 
+                    technical information to our consumers in an understandable manner.</p>
+                    <p><b>Team FOLON</b> - Level designer<br>
+                    July 2023 - July 2024<br>
+                    I was a level designer for Team FOLON on the game Fallout: London <br> 
+                    for almost exactly a year, in this role, I developed interesting levels to <br> 
+                    direct the player through both information and feelings using layouts <br> 
+                    and designs of levels.</p>
+                    <p><b>Team FOLON</b> - Scripter<br>
+                    November 2023 - July 2024<br>
+                    I was a scripter for Team FOLON on the game Fallout: London for a <br> 
+                    short time, for this time, I implemented quests and dialogue inside <br> 
+                    the Bethesda game engine “The Creation Engine” and its restrictions <br> 
+                    to achieve results within story and entertainment.</p>
+                    <p><b>Team FOLON</b> - Downgrader Developer<br>
+                    April 2023 - August  2024<br>
+                    After having my role of scripter for Team FOLON I got the opportunity <br> 
+                    to build "The Fallout: London - Fallout 4 Downgrader". During this task, <br> 
+                    I learned how to both work closely with testers and customers to develop <br> 
+                    software and optimize our products' distribution.</p>
+                </div>
+                <div id="landingSubtitles">
+                    <span class="landingPin"></span>
+                    <h3>Profile</h3>
+                    I'm a passionated student
+                    with a love for Linux, <br>
+                    game development, 
+                    and generally nerdy things.
+                </div>
             </div>
         </div>
         <script type='text/javascript'>
