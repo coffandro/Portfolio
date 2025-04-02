@@ -39,28 +39,33 @@
                 transform-style: preserve-3d;
                 transform-origin: center bottom;
             }
-
             #landingContainer.close {
                 animation: closeLanding 2s forwards;
             }
 
             #landingButton {
                 position: absolute;
-                left: 50%; top: 1vh;
+                left: 50%; top: 0.5vh;
                 transform: translate(-50%, 0);
                 background-color: white;
                 border: 20px solid black;
                 padding: 10px 35px;
-                border-radius: 50px 50px 0 0;
+                border-radius: 35px 35px 0 0;
                 border-bottom: 0;
+                font-size: 2em;
+                font-weight: bold;
             }
-            .mobile #landingButton {
+            .aspect #landingButton {
                 font-size: 4em;
+            }
+
+            .aspect:not(.mobile) #landingButton {
+                font-size: 1em;
             }
 
             #landing {
                 position: absolute;
-                left: 50%; top: 6vh;
+                left: 50%; top: 7vh;
                 transform: translate(-50%, 0);
                 z-index: 2;
                 background-color: #f0c7ab;
@@ -71,13 +76,19 @@
                 height: 92vh;
                 display: block;
                 padding-bottom: 100px;
+                box-shadow: inset 5vw -15vh #c68352;
             }
-
-            .mobile #landing {
+            .aspect #landing {
                 width: 100vw;
                 overflow-y: scroll;
                 height: 90%;
                 padding-bottom: 20px;
+            }
+            .aspect:not(.mobile) #landing {
+                top: 6vh;
+            }
+            .mobile #landing {
+                top: 7vh;
             }
 
             .landingPin::before {
@@ -88,7 +99,6 @@
                 top: 5px;
                 transform: translate(-50%, 0);
             }
-
             .mobile .landingPin::before {
                 font-size: 40px;
             }
@@ -102,11 +112,9 @@
                 top: 4vh;
                 left: 4vw;
             }
-
-            .mobile #landingPicture {
+            .aspect #landingPicture {
                 top: 2vh;
             }
-
             .mobile #landingPicture img {
                 width: 85vw;
             }
@@ -120,10 +128,16 @@
                 top: 70vh;
                 left: 5vw;
             }
-
+            .aspect #landingSubtitles {
+                top: 52vh;
+            }
+            .aspect:not(.mobile) #landingSubtitles {
+                font-size: 1.5em;
+                left: auto;
+                right: 5vw;
+            }
             .mobile #landingSubtitles {
                 font-size: 2.25em;
-                top: 61vh;
             }
 
             #landingBody {
@@ -135,13 +149,13 @@
                 top: 2vh;
                 right: 4vw;
             }
-
-            .mobile #landingBody {
-                font-size: 2em;
+            .aspect #landingBody {
                 top: 75vh;
                 left: 5vw;
             }
-
+            .mobile #landingBody {
+                font-size: 2em;
+            }
             .mobile #landingBody h1 {
                 font-size: 1.75em;
             }
@@ -215,6 +229,14 @@
                 return check;
             };
 
+            window.aspectCheck = function() {
+                let check = false;
+                if (window.innerHeight > window.innerWidth) {
+                    check = true;
+                }
+                return check;
+            }
+
             var pointer_unlocked = null;
             var pointer_locked = null;
             var landing_button = document.getElementById("landingButton");
@@ -223,7 +245,19 @@
 
             addEventListener("DOMContentLoaded", function() {
                 if (window.mobileAndTabletCheck()) {
+                    document.body.classList.add("aspect");
                     document.body.classList.add("mobile");
+                } else if (window.aspectCheck()) {
+                    document.body.classList.add("aspect");
+                }
+            });
+
+            addEventListener("resize", function() {
+                if (window.mobileAndTabletCheck()) {
+                    document.body.classList.add("aspect");
+                    document.body.classList.add("mobile");
+                } else if (window.aspectCheck()) {
+                    document.body.classList.add("aspect");
                 }
             });
 
