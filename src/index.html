@@ -67,7 +67,7 @@
                 position: absolute;
                 left: 50%; top: 7vh;
                 transform: translate(-50%, 0);
-                z-index: 2;
+                z-index: 1;
                 background-color: #f0c7ab;
                 border: 20px solid #8e4c4e;
                 border-bottom: 0;
@@ -98,6 +98,7 @@
                 left: 50%;
                 top: 5px;
                 transform: translate(-50%, 0);
+                z-index: 100;
             }
             .mobile .landingPin::before {
                 font-size: 40px;
@@ -111,6 +112,7 @@
                 position: absolute;
                 top: 4vh;
                 left: 4vw;
+                z-index: 2;
             }
             .aspect #landingPicture {
                 top: 2vh;
@@ -127,6 +129,7 @@
                 position: absolute;
                 top: 70vh;
                 left: 5vw;
+                z-index: 3;
             }
             .aspect #landingSubtitles {
                 top: 52vh;
@@ -148,6 +151,7 @@
                 position: absolute;
                 top: 2vh;
                 right: 4vw;
+                z-index: 4;
             }
             .aspect #landingBody {
                 top: 75vh;
@@ -158,6 +162,31 @@
             }
             .mobile #landingBody h1 {
                 font-size: 1.75em;
+            }
+
+            #landingGamesReminder {
+                width: 200px;
+                height: 200px;
+                background-color: yellow;
+                position: absolute;
+                top: 5vh;
+                left: 42.5%;
+                transform: translate(-50%) rotate(-5deg);
+                z-index: 3;
+            }
+            #landingGamesReminder img {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+            }
+            #landingGamesReminder h1 {
+                margin-left: 10px;
+                font-family: 'Trebuchet MS', sans-serif;
+            }
+            .aspect #landingGamesReminder {
+                display: none !important;
             }
 
             .hidden {
@@ -173,6 +202,10 @@
                 <div id="landingPicture">
                     <span class="landingPin"></span>
                     <img src="img/Cornelius.png">
+                </div>
+                <div id="landingGamesReminder">
+                    <h1>Husk!</h1>
+                    <img src="img/Arrow.svg">
                 </div>
                 <div id="landingSubtitles">
                     <span class="landingPin"></span>
@@ -308,11 +341,11 @@
             }
 
             landing_button.addEventListener("click", function() {
-                if (!window.mobileAndTabletCheck()) {
+                if (!window.mobileAndTabletCheck() && !window.aspectCheck()) {
                     landing_container.classList.add("close");
                     load_game();
                 } else {
-                    alert("This is only supported on PC due to requiring keyboard controls.");
+                    alert("This is only supported on PC due to requiring keyboard controls or the window not being wide enough.");
                 }
             });
         </script>
