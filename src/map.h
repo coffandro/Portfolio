@@ -69,7 +69,7 @@ static const char* links[TEXTURE_AMOUNT] = {
     "https://github.com/coffandro/Portfolio", // 2
     "https://fallout4london.com/", // 3
     "https://coffandro.itch.io/fightforforest", // 4
-    "https://on-undervisning.dk/materialer/din-data", // 5
+    "https://filer.on-undervisning.dk/On_Undervisningsvejledninger_Din_data_din_sikkerhed_eecc85489d.pdf", // 5
     "https://coffandro.itch.io/round-snake", // 6
     "https://coffandro.itch.io/ur", // 7
     "https://coffandro.itch.io/wack-a-capitalist", // 8
